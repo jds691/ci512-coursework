@@ -2,20 +2,9 @@
 
 ## Overview
 
-This is an application designed to perform two types of clustering on a specified dataset for
-the University of Brighton's CI512 - Intelligent Systems 1 module.
-
-It has the requirements of:
-
-- Perform hierarchical clustering on a data set
-- Perform DBSCAN clustering on a second data set
+This is an application designed to classify 2 separate databases using a Neural Network in Python.
 
 ## Datasets
 
-### Hierarchical
-
-Dataset: https://www.kaggle.com/datasets/harrywang/wine-dataset-for-clustering
-
-### DBSCAN
-
-Dataset: https://www.kaggle.com/datasets/arjunbhasin2013/ccdata
+- [Breast Caner - Rahma Sleam, Kaggle](https://www.kaggle.com/datasets/rahmasleam/breast-cancer)
+- [Air Quality and Pollution Assessment, Mujtaba Mateen, Kaggle](https://www.kaggle.com/datasets/taweilo/loan-approval-classification-data)
