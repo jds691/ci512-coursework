@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 dataset: DataFrame = pandas.read_csv('breast-cancer.csv')
+dataset.drop('id', axis=1, inplace=True)
 
 data_splits = []
 
