@@ -115,7 +115,7 @@ def preprocess_data() -> None:
     print('\n')
 
     print('--- Stage 1: Preprocessing Data - Complete ---')
-    print('Caching data splits')
+    print('Caching data splits\n')
     data_splits = [
         X_train,
         y_train,
