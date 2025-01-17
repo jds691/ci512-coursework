@@ -1,5 +1,6 @@
 from enum import Enum
 
+import keras
 import pandas
 from keras import Sequential
 from keras.src.layers import Dense
@@ -144,7 +145,17 @@ def create_model() -> None:
 
     print('--- Model Compilation ---')
     print('Compiling model with binary_crossentropy for binary classification')
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[
+        'accuracy',
+        keras.metrics.TruePositives(),
+        keras.metrics.TrueNegatives(),
+        keras.metrics.FalsePositives(),
+        keras.metrics.FalseNegatives(),
+        keras.metrics.Precision(),
+        keras.metrics.Recall(),
+        # TODO: Error when enabling F1Score
+        # keras.metrics.F1Score(),
+    ])
     print('\n')
 
     print('--- Model Training ---')
@@ -168,18 +179,24 @@ def create_model() -> None:
 
 def run_evaluation() -> None:
     """
+    Calls evaluate on the test data and shows all the required evaluation metrics
 
     :return: None
     """
-    # TODO
-    pass
+    global model
+
+    print('Stage 3: Model Evaluation\n')
+
+    model.evaluate(
+        _get_data_split(DataSplit.TEST, FeatureSet.INPUT).values,
+        _get_data_split(DataSplit.TEST, FeatureSet.TARGET).values
+    )
+
+    print('--- Stage 3: Model Evaluation - Complete ---')
+    print('\n')
 
 
 if __name__ == "__main__":
-    # TODO:
-    # - Testing and analysis
-    #     - Notable ROC Curve
-
     # visualise_dataset()
     preprocess_data()
     create_model()
