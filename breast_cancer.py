@@ -101,7 +101,21 @@ def preprocess_data() -> None:
     y_test.replace('B', 0, inplace=True)
     y_val.replace('B', 0, inplace=True)
 
-    print('Replaced "M" with 1 and "B" with 0 for binary classification\n')
+    print('--- Target Feature Conversion (Series -> NDArray) ---')
+
+    y_train = y_train.to_numpy()
+    y_test = y_test.to_numpy()
+    y_val = y_val.to_numpy()
+
+    print('\n')
+
+    print('--- Target Feature Conversion (1D -> 2D) ---')
+
+    y_train = y_train.reshape((y_train.shape[0], 1))
+    y_test = y_test.reshape((y_test.shape[0], 1))
+    y_val = y_val.reshape((y_val.shape[0], 1))
+
+    print('Reshaped target features to 2D: Shape(*, 1)\n')
 
     print('--- Data Normalisation (Data Scaling) ---')
 
@@ -153,18 +167,17 @@ def create_model() -> None:
         keras.metrics.FalseNegatives(),
         keras.metrics.Precision(),
         keras.metrics.Recall(),
-        # TODO: Error when enabling F1Score
-        # keras.metrics.F1Score(),
+        keras.metrics.F1Score(),
     ])
     print('\n')
 
     print('--- Model Training ---')
     model.fit(
         _get_data_split(DataSplit.TRAIN, FeatureSet.INPUT).values,
-        _get_data_split(DataSplit.TRAIN, FeatureSet.TARGET).values,
+        _get_data_split(DataSplit.TRAIN, FeatureSet.TARGET),
         validation_data=(
             _get_data_split(DataSplit.VALIDATION, FeatureSet.INPUT).values,
-            _get_data_split(DataSplit.VALIDATION, FeatureSet.TARGET).values
+            _get_data_split(DataSplit.VALIDATION, FeatureSet.TARGET)
         ),
         epochs=200
     )
@@ -189,7 +202,7 @@ def run_evaluation() -> None:
 
     model.evaluate(
         _get_data_split(DataSplit.TEST, FeatureSet.INPUT).values,
-        _get_data_split(DataSplit.TEST, FeatureSet.TARGET).values
+        _get_data_split(DataSplit.TEST, FeatureSet.TARGET)
     )
 
     print('--- Stage 3: Model Evaluation - Complete ---')
