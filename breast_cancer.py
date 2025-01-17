@@ -158,7 +158,8 @@ def create_model() -> None:
         epochs=200
     )
 
-    print('Model compilation complete')
+    print('Model compilation complete, Summary:')
+    model.summary()
     print('\n')
 
     print('--- Stage 2: Model Creation - Complete ---')
