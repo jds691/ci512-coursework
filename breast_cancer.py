@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Any
 
 import pandas
+from keras import Sequential
+from keras.src.layers import Dense
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -11,6 +12,7 @@ dataset.drop('id', axis=1, inplace=True)
 
 data_splits = []
 
+model: Sequential
 
 class DataSplit(Enum):
     TRAIN = 0
@@ -23,7 +25,7 @@ class FeatureSet(Enum):
     TARGET = 1
 
 
-def get_data_split(split: DataSplit, feature: FeatureSet) -> Any:
+def _get_data_split(split: DataSplit, feature: FeatureSet) -> DataFrame:
     return data_splits[split.value + feature.value]
 
 
@@ -88,6 +90,18 @@ def preprocess_data() -> None:
 
     # Total Split: 60% Training, 20% Testing, 20% Validation
 
+    print('--- Target Feature Conversion (str -> int) ---')
+
+    y_train.replace('M', 1, inplace=True)
+    y_test.replace('M', 1, inplace=True)
+    y_val.replace('M', 1, inplace=True)
+
+    y_train.replace('B', 0, inplace=True)
+    y_test.replace('B', 0, inplace=True)
+    y_val.replace('B', 0, inplace=True)
+
+    print('Replaced "M" with 1 and "B" with 0 for binary classification\n')
+
     print('--- Data Normalisation (Data Scaling) ---')
 
     # Data is normalised and scaled AFTER splitting to avoid data leaking
@@ -114,11 +128,41 @@ def preprocess_data() -> None:
 
 def create_model() -> None:
     """
-
+    Builds the tensorflow model with the correctly configured input and output layers and compiles it.
     :return: None
     """
-    # TODO
-    pass
+    global model
+
+    print('Stage 2: Model Creation\n')
+
+    model = Sequential()
+
+    model.add(Dense(128, activation='relu', input_dim=30))
+    model.add(Dense(64, activation='relu'))
+
+    model.add(Dense(1, activation='sigmoid'))
+
+    print('--- Model Compilation ---')
+    print('Compiling model with binary_crossentropy for binary classification')
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    print('\n')
+
+    print('--- Model Training ---')
+    model.fit(
+        _get_data_split(DataSplit.TRAIN, FeatureSet.INPUT).values,
+        _get_data_split(DataSplit.TRAIN, FeatureSet.TARGET).values,
+        validation_data=(
+            _get_data_split(DataSplit.VALIDATION, FeatureSet.INPUT).values,
+            _get_data_split(DataSplit.VALIDATION, FeatureSet.TARGET).values
+        ),
+        epochs=200
+    )
+
+    print('Model compilation complete')
+    print('\n')
+
+    print('--- Stage 2: Model Creation - Complete ---')
+    print('\n')
 
 
 def run_evaluation() -> None:
@@ -132,7 +176,6 @@ def run_evaluation() -> None:
 
 if __name__ == "__main__":
     # TODO:
-    # - Model training
     # - Testing and analysis
     #     - Notable ROC Curve
 
