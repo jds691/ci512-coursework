@@ -7,4 +7,4 @@ This is an application designed to classify 2 separate databases using a Neural 
 ## Datasets
 
 - [Breast Caner - Rahma Sleam, Kaggle](https://www.kaggle.com/datasets/rahmasleam/breast-cancer)
-- [Air Quality and Pollution Assessment, Mujtaba Mateen, Kaggle](https://www.kaggle.com/datasets/taweilo/loan-approval-classification-data)
+- [Air Quality and Pollution Assessment, Mujtaba Mateen, Kaggle](https://www.kaggle.com/datasets/mujtabamatin/air-quality-and-pollution-assessment)
