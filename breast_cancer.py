@@ -1,5 +1,3 @@
-from enum import Enum
-
 import keras
 import pandas
 from keras import Sequential
@@ -8,22 +6,14 @@ from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+from common import DataSplit, FeatureSet
+
 dataset: DataFrame = pandas.read_csv('breast-cancer.csv')
 dataset.drop('id', axis=1, inplace=True)
 
 data_splits = []
 
 model: Sequential
-
-class DataSplit(Enum):
-    TRAIN = 0
-    TEST = 2
-    VALIDATION = 4
-
-
-class FeatureSet(Enum):
-    INPUT = 0
-    TARGET = 1
 
 
 def _get_data_split(split: DataSplit, feature: FeatureSet) -> DataFrame:
