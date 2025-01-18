@@ -197,7 +197,9 @@ if __name__ == "__main__":
     print('Running breast_cancer from main. Running all stages!\n')
 
     network: BreastCancerNeuralNetwork = BreastCancerNeuralNetwork(
-        options=NeuralNetworkOptions()
+        options=NeuralNetworkOptions(
+            wait_for_verification=True
+        )
     )
 
     network.run()
