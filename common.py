@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
+from os import system, name
 
 class DataSplit(Enum):
     TRAIN = 0
@@ -30,6 +31,7 @@ def _create_default_neural_network_stages() -> list[NeuralNetworkStages]:
 
 @dataclass
 class NeuralNetworkOptions:
+    wait_for_verification: bool = False
     stages: list[NeuralNetworkStages] = field(default_factory=_create_default_neural_network_stages)
 
 
@@ -62,3 +64,14 @@ class NeuralNetwork:
                     self.create_model()
                 case NeuralNetworkStages.EVALUATION:
                     self.run_evaluation()
+
+    def wait_for_verification(self) -> None:
+        if not self._options.wait_for_verification:
+            return
+
+        input('Press any key to advance...')
+
+        if name == 'nt':
+            system('cls')
+        else:
+            system('clear')

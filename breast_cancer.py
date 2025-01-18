@@ -38,6 +38,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         print('Please check your IDE for an output of the visualisation data')
         print('--- Visualisation: Dataset plotting - Complete ---')
         print('\n')
+        self.wait_for_verification()
 
     def preprocess_data(self) -> None:
         """
@@ -49,10 +50,12 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         print('--- Null data check ---')
         print(self._dataset.isnull().any())
         print('\n')
+        self.wait_for_verification()
 
         print('--- Preliminary Statistics ---')
         print(self._dataset.describe())
         print('\n')
+        self.wait_for_verification()
 
         print('--- Empty Column Value Count ---')
         columns_missing_data = []
@@ -64,6 +67,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
             print(column + ": " + str(missing))
 
         print('\n')
+        self.wait_for_verification()
 
         if columns_missing_data.__len__() > 0:
             print('--- Empty Column Value Replacement (Mean) ---')
@@ -72,6 +76,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
                 print(f'Replacing empty values in {column} with mean of {self._dataset[column].mean()}')
 
             print('\n')
+            self.wait_for_verification()
 
         print('--- Feature Set and Data Split ---')
         X = self._dataset.drop('diagnosis', axis=1)
@@ -111,6 +116,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         y_val = y_val.reshape((y_val.shape[0], 1))
 
         print('Reshaped target features to 2D: Shape(*, 1)\n')
+        self.wait_for_verification()
 
         print('--- Data Normalisation (Data Scaling) ---')
 
@@ -123,6 +129,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         scaler.fit(X_val)
         print('Scaled validation data')
         print('\n')
+        self.wait_for_verification()
 
         print('--- Stage 1: Preprocessing Data - Complete ---')
         print('Caching data splits\n')
@@ -134,6 +141,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
             X_val,
             y_val,
         ]
+        self.wait_for_verification()
 
     def create_model(self) -> None:
         """
@@ -162,6 +170,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
             keras.metrics.F1Score(),
         ])
         print('\n')
+        self.wait_for_verification()
 
         print('--- Model Training ---')
         self._model.fit(
@@ -173,13 +182,16 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
             ),
             epochs=200
         )
+        self.wait_for_verification()
 
         print('Model compilation complete, Summary:')
         self._model.summary()
         print('\n')
+        self.wait_for_verification()
 
         print('--- Stage 2: Model Creation - Complete ---')
         print('\n')
+        self.wait_for_verification()
 
     def run_evaluation(self) -> None:
         """
@@ -196,6 +208,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
 
         print('--- Stage 3: Model Evaluation - Complete ---')
         print('\n')
+        self.wait_for_verification()
 
 
 if __name__ == "__main__":
