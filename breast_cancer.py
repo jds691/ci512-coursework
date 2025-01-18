@@ -26,10 +26,6 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         return self._data_splits[split.value + feature.value]
 
     def visualise_dataset(self) -> None:
-        """
-        Plots a graph of all values within the dataset, unscaled
-        :return: None
-        """
         print('Visualisation: Dataset plotting\n')
 
         self._dataset.hist(figsize=(15, 20))
@@ -41,11 +37,6 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         self.wait_for_verification()
 
     def preprocess_data(self) -> None:
-        """
-        Analyses the input dataset and makes it usable for a neural network system. Then proceeds to split the data into specific sets for training.
-
-        :return: None
-        """
         print('Stage 1: Preprocessing data\n')
         print('--- Null data check ---')
         print(self._dataset.isnull().any())
@@ -144,10 +135,6 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         self.wait_for_verification()
 
     def create_model(self) -> None:
-        """
-        Builds the tensorflow model with the correctly configured input and output layers and compiles it.
-        :return: None
-        """
         print('Stage 2: Model Creation\n')
 
         self._model = Sequential()
@@ -194,11 +181,6 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         self.wait_for_verification()
 
     def run_evaluation(self) -> None:
-        """
-        Calls evaluate on the test data and shows all the required evaluation metrics
-
-        :return: None
-        """
         print('Stage 3: Model Evaluation\n')
 
         self._model.evaluate(
