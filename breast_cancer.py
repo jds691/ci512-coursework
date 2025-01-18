@@ -2,6 +2,7 @@ import keras
 import pandas
 from keras import Sequential
 from keras.src.layers import Dense
+from matplotlib import pyplot
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -22,11 +23,19 @@ def _get_data_split(split: DataSplit, feature: FeatureSet) -> DataFrame:
 
 def visualise_dataset() -> None:
     """
-
+    Plots a graph of all values within the dataset, unscaled
     :return: None
     """
-    # TODO
-    pass
+    global dataset
+
+    print('Visualisation: Dataset plotting\n')
+
+    dataset.hist(figsize=(15, 20))
+    pyplot.show()
+
+    print('Please check your IDE for an output of the visualisation data')
+    print('--- Visualisation: Dataset plotting - Complete ---')
+    print('\n')
 
 
 def preprocess_data() -> None:
@@ -200,7 +209,8 @@ def run_evaluation() -> None:
 
 
 if __name__ == "__main__":
-    # visualise_dataset()
+    print('Running breast_cancer from main. Running all stages!\n')
+    visualise_dataset()
     preprocess_data()
     create_model()
     run_evaluation()
