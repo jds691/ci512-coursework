@@ -48,17 +48,24 @@ def _display_config_menu():
         'On'
     ]
 
+    visualisation_values = [
+        'Save to Disk',
+        'Show Windows'
+    ]
+
     active = []
     for stage in _neural_network_options.stages:
         active.append(stage.value)
 
     form = {
         'Wait for Verification': survey.widgets.Select(options=verification_values),
+        'Visualisation Mode': survey.widgets.Select(options=visualisation_values),
         'Enabled Stages': survey.widgets.Basket(options=stages, active=active)
     }
 
     config_data = survey.routines.form('Config:', form=form)
 
+    _neural_network_options.display_visualisations = config_data['Visualisation Mode']
     _neural_network_options.wait_for_verification = config_data['Wait for Verification']
     _neural_network_options.stages.clear()
 

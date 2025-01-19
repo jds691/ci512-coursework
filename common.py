@@ -1,6 +1,12 @@
+import os
 from dataclasses import dataclass, field
 from enum import Enum
 from os import system, name
+from os.path import join, dirname
+
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+
 
 class DataSplit(Enum):
     """
@@ -45,6 +51,7 @@ class NeuralNetworkOptions:
     """
 
     wait_for_verification: bool = False
+    display_visualisations: bool = False
     stages: list[NeuralNetworkStages] = field(default_factory=_create_default_neural_network_stages)
 
 
@@ -54,9 +61,12 @@ class NeuralNetwork:
     """
 
     _options: NeuralNetworkOptions
+    _figures: [Figure] = []
+    _name: str
 
-    def __init__(self, options: NeuralNetworkOptions):
+    def __init__(self, display_name: str, options: NeuralNetworkOptions):
         self._options = options
+        self._name = display_name
 
     def visualise_dataset(self) -> None:
         """
@@ -106,6 +116,35 @@ class NeuralNetwork:
                     self.create_model()
                 case NeuralNetworkStages.EVALUATION:
                     self.run_evaluation()
+
+    def add_visualisation_to_queue(self, figure: Figure) -> None:
+        self._figures.append(figure)
+
+    def show_visualisations(self) -> None:
+        if self._options.display_visualisations:
+            plt.show()
+        else:
+            root_folder: str = join(dirname(__file__), 'visualisations', self._name)
+
+            if not os.path.exists(root_folder):
+                os.makedirs(root_folder)
+
+            print(f'Saving all figures to: {root_folder}')
+            for figure in self._figures:
+                figure_title: str = figure.axes[0].get_title()
+                try:
+                    figure.savefig(
+                        join(dirname(__file__), 'visualisations', self._name, figure_title + ".png"),
+                        format='png',
+                    )
+                except IOError:
+                    print(f'Unable to save figure \'{figure_title}\' to disk')
+
+    def close_all_visualisations(self) -> None:
+        if self._options.display_visualisations:
+            plt.close('all')
+
+        self._figures.clear()
 
     def wait_for_verification(self) -> None:
         """
