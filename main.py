@@ -70,6 +70,7 @@ def _display_config_menu():
     form = {
         'Wait for Verification': wait_for_verification_widget,
         'Visualisation Mode': visualisation_mode_widget,
+        'Epochs': survey.widgets.Count(value=_neural_network_options.epochs, decimal=False),
         'Enabled Stages': survey.widgets.Basket(options=stages, active=active)
     }
 
@@ -77,6 +78,14 @@ def _display_config_menu():
 
     _neural_network_options.display_visualisations = config_data['Visualisation Mode']
     _neural_network_options.wait_for_verification = config_data['Wait for Verification']
+    new_epochs = config_data['Epochs']
+
+    if new_epochs < 1:
+        survey.printers.fail('Epochs cannot be less than 1. Resetting to 32')
+        _neural_network_options.epochs = 32
+    else:
+        _neural_network_options.epochs = new_epochs
+
     _neural_network_options.stages.clear()
 
     for stage in config_data['Enabled Stages']:

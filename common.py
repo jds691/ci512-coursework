@@ -49,7 +49,7 @@ class NeuralNetworkOptions:
     """
     Represents the options for neural networks when run
     """
-
+    epochs: int = 32
     wait_for_verification: bool = False
     display_visualisations: bool = False
     stages: list[NeuralNetworkStages] = field(default_factory=_create_default_neural_network_stages)

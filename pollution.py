@@ -185,7 +185,7 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
                 self._get_data_split(DataSplit.VALIDATION, FeatureSet.INPUT),
                 self._get_data_split(DataSplit.VALIDATION, FeatureSet.TARGET)
             ),
-            epochs=5,
+            epochs=self._options.epochs,
         )
         self.wait_for_verification()
 
