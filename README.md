@@ -23,6 +23,8 @@ If you wish to run an algorithm directly, you can replace main.py with breast_ca
 > [!IMPORTANT]
 > If you receive an error running main.py in the IDE please run it using Command Prompt, Powershell or your preferred
 > terminal
+>
+> Alternatively, run either breast_cancer.py or pollution.py directly
 
 ### Config
 
