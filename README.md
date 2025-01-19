@@ -27,6 +27,7 @@ If you wish to run an algorithm directly, you can replace main.py with breast_ca
 ### Config
 
 - Wait for Verification (Default: Off): Will wait between steps until you want it to continue to verify output
+- Visualisation Mode (Default: Save to Disk): Determines how to display visualisations
 - Enabled Stages (Default: All): List of neural network stages to run **(Disabling compilation but enabling evaluation
   will crash)**
 

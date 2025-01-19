@@ -19,7 +19,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
     _model: Sequential
 
     def __init__(self, options: NeuralNetworkOptions):
-        super().__init__(options)
+        super().__init__('breast_cancer', options)
         self._dataset = pandas.read_csv('breast-cancer.csv')
         self._dataset.drop('id', axis=1, inplace=True)
 
@@ -32,12 +32,12 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         visualisation_columns = self._dataset.drop('diagnosis', axis=1).columns
 
         for column in visualisation_columns:
-            plt.figure(column)
+            self.add_visualisation_to_queue(plt.figure(column))
             plot = sns.histplot(data=self._dataset, x=column, hue='diagnosis', kde=True)
             plot.set_title(column)
 
-        plt.show()
-        plt.close('all')
+        self.show_visualisations()
+        self.close_all_visualisations()
 
         print('--- Visualisation: Dataset plotting - Complete ---')
         print('\n')

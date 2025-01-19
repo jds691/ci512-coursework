@@ -19,7 +19,7 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
     _model: Sequential
 
     def __init__(self, options: NeuralNetworkOptions):
-        super().__init__(options)
+        super().__init__('pollution', options)
         self._dataset = pandas.read_csv('updated_pollution_dataset.csv')
 
     def _get_data_split(self, split: DataSplit, feature: FeatureSet) -> DataFrame:
@@ -31,12 +31,12 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
         visualisation_columns = self._dataset.drop('Air Quality', axis=1).columns
 
         for column in visualisation_columns:
-            plt.figure(column)
+            self.add_visualisation_to_queue(plt.figure(column))
             plot = sns.histplot(data=self._dataset, x=column, hue='Air Quality', kde=True)
             plot.set_title(column)
 
-        plt.show()
-        plt.close('all')
+        self.show_visualisations()
+        self.close_all_visualisations()
 
         print('Please check your IDE for an output of the visualisation data')
         print('--- Visualisation: Dataset plotting - Complete ---')
