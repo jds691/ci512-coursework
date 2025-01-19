@@ -128,11 +128,11 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
 
         # Data is normalised and scaled AFTER splitting to avoid data leaking
         scaler: StandardScaler = StandardScaler()
-        scaler.fit(X_train)
+        X_train = scaler.fit_transform(X_train)
         print('Scaled training data')
-        scaler.fit(X_test)
+        X_test = scaler.fit_transform(X_test)
         print('Scaled test data')
-        scaler.fit(X_val)
+        X_val = scaler.fit_transform(X_val)
         print('Scaled validation data')
         print('\n')
         self.wait_for_verification()
@@ -177,10 +177,10 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
 
         print('--- Model Training ---')
         self._model.fit(
-            self._get_data_split(DataSplit.TRAIN, FeatureSet.INPUT).values,
+            self._get_data_split(DataSplit.TRAIN, FeatureSet.INPUT),
             self._get_data_split(DataSplit.TRAIN, FeatureSet.TARGET),
             validation_data=(
-                self._get_data_split(DataSplit.VALIDATION, FeatureSet.INPUT).values,
+                self._get_data_split(DataSplit.VALIDATION, FeatureSet.INPUT),
                 self._get_data_split(DataSplit.VALIDATION, FeatureSet.TARGET)
             ),
             epochs=200,
@@ -200,7 +200,7 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
         print('Stage 3: Model Evaluation\n')
 
         self._model.evaluate(
-            self._get_data_split(DataSplit.TEST, FeatureSet.INPUT).values,
+            self._get_data_split(DataSplit.TEST, FeatureSet.INPUT),
             self._get_data_split(DataSplit.TEST, FeatureSet.TARGET)
         )
 
