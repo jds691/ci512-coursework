@@ -17,6 +17,7 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
     _data_splits = []
 
     _model: Sequential
+    _model_history: keras.callbacks.History
 
     def __init__(self, options: NeuralNetworkOptions):
         super().__init__('pollution', options)
@@ -26,6 +27,7 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
         return self._data_splits[split.value + feature.value]
 
     def visualise_dataset(self) -> None:
+        return
         print('Visualisation: Dataset plotting\n')
 
         visualisation_columns = self._dataset.drop('Air Quality', axis=1).columns
@@ -176,14 +178,14 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
         self.wait_for_verification()
 
         print('--- Model Training ---')
-        self._model.fit(
+        self._model_history = self._model.fit(
             self._get_data_split(DataSplit.TRAIN, FeatureSet.INPUT),
             self._get_data_split(DataSplit.TRAIN, FeatureSet.TARGET),
             validation_data=(
                 self._get_data_split(DataSplit.VALIDATION, FeatureSet.INPUT),
                 self._get_data_split(DataSplit.VALIDATION, FeatureSet.TARGET)
             ),
-            epochs=200,
+            epochs=5,
         )
         self.wait_for_verification()
 
@@ -198,6 +200,37 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
 
     def run_evaluation(self) -> None:
         print('Stage 3: Model Evaluation\n')
+
+        print('--- Metrics over Epochs ---')
+
+        history_frame = pandas.DataFrame(self._model_history.history)
+        history_frame['epoch'] = self._model_history.epoch
+
+        ignored_metrics = [
+            'epoch',
+            # I cannot for the life of me make the program accept plotting the f1_score for a categorical output
+            'f1_score',
+            'val_accuracy',
+            'val_f1_score',
+            'val_false_negatives',
+            'val_false_positives',
+            'val_loss',
+            'val_precision',
+            'val_recall',
+            'val_true_positives',
+            'val_true_negatives',
+        ]
+
+        for metric in history_frame.drop(ignored_metrics, axis=1).columns:
+            self.add_visualisation_to_queue(plt.figure(metric))
+            plot = sns.lineplot(data=history_frame, x='epoch', y=metric)
+            plot.set_title(metric)
+
+        self.show_visualisations()
+        self.close_all_visualisations()
+        self.wait_for_verification()
+
+        print('--- Model Evaluate ---')
 
         self._model.evaluate(
             self._get_data_split(DataSplit.TEST, FeatureSet.INPUT),
@@ -216,7 +249,7 @@ if __name__ == "__main__":
 
     network: AirPollutionNeuralNetwork = AirPollutionNeuralNetwork(
         options=NeuralNetworkOptions(
-            wait_for_verification=True
+            wait_for_verification=False
         )
     )
 
