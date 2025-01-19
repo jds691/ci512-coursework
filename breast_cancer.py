@@ -1,8 +1,9 @@
 import keras
+import matplotlib.pyplot as plt
 import pandas
+import seaborn as sns
 from keras import Sequential
 from keras.src.layers import Dense
-from matplotlib import pyplot
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -28,10 +29,16 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
     def visualise_dataset(self) -> None:
         print('Visualisation: Dataset plotting\n')
 
-        self._dataset.hist(figsize=(15, 20))
-        pyplot.show()
+        visualisation_columns = self._dataset.drop('diagnosis', axis=1).columns
 
-        print('Please check your IDE for an output of the visualisation data')
+        for column in visualisation_columns:
+            plt.figure(column)
+            plot = sns.histplot(data=self._dataset, x=column, hue='diagnosis', kde=True)
+            plot.set_title(column)
+
+        plt.show()
+        plt.close('all')
+
         print('--- Visualisation: Dataset plotting - Complete ---')
         print('\n')
         self.wait_for_verification()
@@ -187,6 +194,8 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
             self._get_data_split(DataSplit.TEST, FeatureSet.INPUT).values,
             self._get_data_split(DataSplit.TEST, FeatureSet.TARGET)
         )
+
+        # TODO: Implement ROC Curve
 
         print('--- Stage 3: Model Evaluation - Complete ---')
         print('\n')
