@@ -57,9 +57,19 @@ def _display_config_menu():
     for stage in _neural_network_options.stages:
         active.append(stage.value)
 
+    wait_for_verification_widget = survey.widgets.Select(options=verification_values)
+    if _neural_network_options.wait_for_verification:
+        # Moves the selection down by one
+        wait_for_verification_widget.invoke(survey.core.Event.arrow_down, survey.core.ansi.Control(rune=''))
+
+    visualisation_mode_widget = survey.widgets.Select(options=visualisation_values)
+    if _neural_network_options.wait_for_verification:
+        # Moves the selection down by one
+        visualisation_mode_widget.invoke(survey.core.Event.arrow_down, survey.core.ansi.Control(rune=''))
+
     form = {
-        'Wait for Verification': survey.widgets.Select(options=verification_values),
-        'Visualisation Mode': survey.widgets.Select(options=visualisation_values),
+        'Wait for Verification': wait_for_verification_widget,
+        'Visualisation Mode': visualisation_mode_widget,
         'Enabled Stages': survey.widgets.Basket(options=stages, active=active)
     }
 
