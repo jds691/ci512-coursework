@@ -7,6 +7,7 @@ from os.path import join, dirname
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
+
 class DataSplit(Enum):
     """
     Represents data splits within in the dataset for model training purposes
@@ -130,7 +131,11 @@ class NeuralNetwork:
 
             print(f'Saving all figures to: {root_folder}')
             for figure in self._figures:
-                figure.savefig(join(dirname(__file__), 'visualisations', self._name, figure.axes[0].get_title()))
+                figure_title: str = figure.axes[0].get_title()
+                try:
+                    figure.savefig(join(dirname(__file__), 'visualisations', self._name, figure_title))
+                except IOError:
+                    print(f'Unable to save figure \'{figure_title}\' to disk')
 
     def close_all_visualisations(self) -> None:
         if self._options.display_visualisations:
