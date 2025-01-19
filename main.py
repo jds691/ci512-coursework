@@ -70,7 +70,7 @@ def _display_config_menu():
     form = {
         'Wait for Verification': wait_for_verification_widget,
         'Visualisation Mode': visualisation_mode_widget,
-        'Epochs': survey.widgets.Count(value=_neural_network_options.epochs, decimal=False),
+        'Epochs': survey.widgets.Count(value=_neural_network_options.epochs, decimal=False, rate=-1),
         'Enabled Stages': survey.widgets.Basket(options=stages, active=active)
     }
 
