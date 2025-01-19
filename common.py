@@ -133,7 +133,10 @@ class NeuralNetwork:
             for figure in self._figures:
                 figure_title: str = figure.axes[0].get_title()
                 try:
-                    figure.savefig(join(dirname(__file__), 'visualisations', self._name, figure_title))
+                    figure.savefig(
+                        join(dirname(__file__), 'visualisations', self._name, figure_title + ".png"),
+                        format='png',
+                    )
                 except IOError:
                     print(f'Unable to save figure \'{figure_title}\' to disk')
 
