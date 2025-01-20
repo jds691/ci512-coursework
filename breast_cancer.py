@@ -30,6 +30,8 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
     def visualise_dataset(self) -> None:
         print('Visualisation: Dataset plotting\n')
 
+        self._figure_category = 'Preliminary Statistics'
+
         visualisation_columns = self._dataset.drop('diagnosis', axis=1).columns
 
         for column in visualisation_columns:
@@ -192,6 +194,8 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         print('Stage 3: Model Evaluation\n')
 
         print('--- Metrics over Epochs ---')
+
+        self._figure_category = 'Model Metrics'
 
         history_frame = pandas.DataFrame(self._model_history.history)
         history_frame['epoch'] = self._model_history.epoch

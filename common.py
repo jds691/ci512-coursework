@@ -63,6 +63,7 @@ class NeuralNetwork:
     _options: NeuralNetworkOptions
     _figures: [Figure] = []
     _name: str
+    _figure_category: str = ''
 
     def __init__(self, display_name: str, options: NeuralNetworkOptions):
         self._options = options
@@ -124,7 +125,7 @@ class NeuralNetwork:
         if self._options.display_visualisations:
             plt.show()
         else:
-            root_folder: str = join(dirname(__file__), 'visualisations', self._name)
+            root_folder: str = join(dirname(__file__), 'visualisations', self._name, self._figure_category)
 
             if not os.path.exists(root_folder):
                 os.makedirs(root_folder)
@@ -134,7 +135,8 @@ class NeuralNetwork:
                 figure_title: str = figure.axes[0].get_title()
                 try:
                     figure.savefig(
-                        join(dirname(__file__), 'visualisations', self._name, figure_title + ".png"),
+                        join(dirname(__file__), 'visualisations', self._name, self._figure_category,
+                             figure_title + ".png"),
                         format='png',
                     )
                 except IOError:
