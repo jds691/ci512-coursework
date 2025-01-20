@@ -27,7 +27,6 @@ class AirPollutionNeuralNetwork(common.NeuralNetwork):
         return self._data_splits[split.value + feature.value]
 
     def visualise_dataset(self) -> None:
-        return
         print('Visualisation: Dataset plotting\n')
 
         self._figure_category = 'Preliminary Statistics'
