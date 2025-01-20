@@ -201,16 +201,7 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
         history_frame['epoch'] = self._model_history.epoch
 
         ignored_metrics = [
-            'epoch',
-            'val_accuracy',
-            'val_f1_score',
-            'val_false_negatives',
-            'val_false_positives',
-            'val_loss',
-            'val_precision',
-            'val_recall',
-            'val_true_positives',
-            'val_true_negatives',
+            'epoch'
         ]
 
         working_history_copy = history_frame.copy(deep=True)
@@ -220,9 +211,12 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
                 working_history_copy = working_history_copy.drop(metric, axis=1)
 
         for metric in working_history_copy.columns:
-            self.add_visualisation_to_queue(plt.figure(metric))
-            plot = sns.lineplot(data=history_frame, x='epoch', y=metric)
-            plot.set_title(metric)
+            try:
+                self.add_visualisation_to_queue(plt.figure(metric))
+                plot = sns.lineplot(data=history_frame, x='epoch', y=metric)
+                plot.set_title(metric)
+            except Exception:
+                continue
 
         self.show_visualisations()
         self.close_all_visualisations()
