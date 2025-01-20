@@ -209,7 +209,13 @@ class BreastCancerNeuralNetwork(common.NeuralNetwork):
             'val_true_negatives',
         ]
 
-        for metric in history_frame.drop(ignored_metrics, axis=1).columns:
+        working_history_copy = history_frame.copy(deep=True)
+
+        for metric in ignored_metrics:
+            if metric in working_history_copy.columns:
+                working_history_copy = working_history_copy.drop(metric, axis=1)
+
+        for metric in working_history_copy.columns:
             self.add_visualisation_to_queue(plt.figure(metric))
             plot = sns.lineplot(data=history_frame, x='epoch', y=metric)
             plot.set_title(metric)
